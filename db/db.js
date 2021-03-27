@@ -1,5 +1,7 @@
 const { MongoClient } = require('mongodb');
-const url = "mongodb://localhost:27017";
+const { EC2_MONGO_URI, LOCAL_MONGO_URI } = require('../config/config');
+// const url = LOCAL_MONGO_URI;
+const url = EC2_MONGO_URI;
 
 let _db;
 

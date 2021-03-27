@@ -20,7 +20,9 @@ const port = process.env.PORT || 3000;
 app.get('/reviews/meta', (req, res) => {
   const productId = Number(req.query.product_id);
   db.collection('final_products').findOne({_id: productId}, function(err, result) {
-    if (err) throw err;
+    if (err) {
+      res.sendStatus(404);
+    };
     const metaData = {
       product_id: productId.toString(),
       ratings: {},
@@ -95,7 +97,9 @@ app.get('/reviews', (req, res) => {
   const sortValue = req.query.sort;
 
   db.collection('final_products').findOne({_id: productId}, function(err, result) {
-    if (err) throw err;
+    if (err) {
+      res.sendStatus(404);
+    };
 
     const reviews = {
       results: []
@@ -200,9 +204,6 @@ app.post('/reviews', (req, res) => {
     reviewer_name: name,
     summary: summary || ''
   };
-
-  // TEST: TRY JUST RETURNING THE NEW REVIEW OBJECT TO VERIFY IF IT'S GETTING CREATED PROPERLY
-  // res.json(newReview);
 
   db.collection('final_products').updateOne({_id: product_id}, {$push: {'reviews': newReview }}, (err) => {
     if (err) {
